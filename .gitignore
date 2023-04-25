@@ -3,3 +3,8 @@ __pycache__
 *.csv
 
 training_summaries
+embeddings/GoogleNews-vectors-negative300/GoogleNews-vectors-negative300.bin
+embeddings/glove.840B.300d/glove.840B.300d.txt
+embeddings/paragram_300_sl999/paragram_300_sl999.txt
+embeddings/paragram_300_sl999/README.txt
+embeddings/wiki-news-300d-1M/wiki-news-300d-1M.vec
