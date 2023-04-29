@@ -1,17 +1,20 @@
 import os
-
+import torch
 import constants
 from data.StartingDataset import StartingDataset
 from networks.StartingNetwork import StartingNetwork
 from train_functions.starting_train import starting_train
 
-
 def main():
+    """
+    Reads in data and 
+    """
     # Get command line arguments
     hyperparameters = {"epochs": constants.EPOCHS, "batch_size": constants.BATCH_SIZE}
 
     # TODO: Add GPU support. This line of code might be helpful.
-    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("Device: ", device)
 
     print("Epochs:", constants.EPOCHS)
     print("Batch size:", constants.BATCH_SIZE)
@@ -21,6 +24,9 @@ def main():
 
     train_dataset = StartingDataset(data_path)
     val_dataset = StartingDataset(data_path)
+    # why do you need two identical Dataset objects?
+    # should be changed in some way so that val_dataset only does validation
+
     model = StartingNetwork()
     starting_train(
         train_dataset=train_dataset,
@@ -28,7 +34,9 @@ def main():
         model=model,
         hyperparameters=hyperparameters,
         n_eval=constants.N_EVAL,
-    )
+    ) # call the training function from starting_train.py
+    # hyperparameters from constants.py
+    # can customize model
 
 if __name__ == "__main__":
     main()
