@@ -43,6 +43,8 @@ def main():
     # hyperparameters from constants.py
     # can customize model
     #return whole_dataset
+    return model
+
 
 if __name__ == "__main__":
-    main()
+    finished_model = main()

@@ -30,11 +30,11 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
     # Initalize optimizer (for gradient descent) and loss function
     optimizer = optim.Adam(model.parameters())
     loss_fn = nn.CrossEntropyLoss()
-
+    train_losses = []
     step = 0
     for epoch in range(epochs):
         print(f"Epoch {epoch + 1} of {epochs}")
-
+        losses = []
         # Loop over each batch in the dataset
         for batch in tqdm(train_loader):
             # Zero the gradients
@@ -49,8 +49,10 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
             loss.backward()
             optimizer.step()
 
+            losses.append(loss.item())
+
             # Periodically evaluate our model + log to Tensorboard
-            if step % n_eval == 0:
+            if step % n_eval == -1:
                 # Compute training loss and accuracy
                 with torch.no_grad():
                     train_loss, train_acc = evaluate(train_loader, model, loss_fn)
@@ -72,7 +74,9 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
                 evaluate(val_loader, model, loss_fn)
 
             step += 1
-
+        epoch_loss = sum(losses) / step
+        train_losses.append(epoch_loss)
+        tqdm.write(f'Epoch #{epoch + 1}\tTrain Loss: {epoch_loss:.3f}')
         print()
 
 
