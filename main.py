@@ -21,20 +21,16 @@ def main():
 
     # Initalize dataset and model. Then train the model!
     data_path = "train.csv" #TODO: make sure you have train.csv downloaded in your project! this assumes it is in the project's root directory (ie the same directory as main) but you can change this as you please
+    # 1306122 rows
+    # qid, question_text, target``
 
     train_dataset = StartingDataset(data_path)
     val_dataset = StartingDataset(data_path)
     # why do you need two identical Dataset objects?
     # should be changed in some way so that val_dataset only does validation
 
-    model = StartingNetwork()
-    starting_train(
-        train_dataset=train_dataset,
-        val_dataset=val_dataset,
-        model=model,
-        hyperparameters=hyperparameters,
-        n_eval=constants.N_EVAL,
-    ) # call the training function from starting_train.py
+    #model = StartingNetwork()
+    #starting_train(train_dataset=train_dataset, val_dataset=val_dataset, model=model, hyperparameters=hyperparameters, n_eval=constants.N_EVAL,) # call the training function from starting_train.py
     # hyperparameters from constants.py
     # can customize model
 
