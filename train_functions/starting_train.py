@@ -37,15 +37,33 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
 
         # Loop over each batch in the dataset
         for batch in tqdm(train_loader):
-            # TODO: Forward propagate
+            # Zero the gradients
+            model.zero_grad()
+
+            # Forward propagate
+            inputs, labels = batch
+            outputs = model(inputs)
+            loss = loss_fn(outputs, labels)
 
             # TODO: Backpropagation and gradient descent
+            loss.backward()
+            optimizer.step()
 
             # Periodically evaluate our model + log to Tensorboard
             if step % n_eval == 0:
-                # TODO:
-                # Compute training loss and accuracy.
-                # Log the results to Tensorboard.
+                # Compute training loss and accuracy
+                with torch.no_grad():
+                    train_loss, train_acc = evaluate(train_loader, model, loss_fn)
+
+                 # Log training results to console
+                print(f"Step {step}, Training Loss: {train_loss:.4f}, Training Accuracy: {train_acc:.4f}")
+
+                # Compute validation loss and accuracy
+                with torch.no_grad():
+                    val_loss, val_acc = evaluate(val_loader, model, loss_fn)
+
+                # Log validation results to console
+                print(f"Step {step}, Validation Loss: {val_loss:.4f}, Validation Accuracy: {val_acc:.4f}")
 
                 # TODO:
                 # Compute validation loss and accuracy.
@@ -75,10 +93,28 @@ def compute_accuracy(outputs, labels):
     return n_correct / n_total
 
 
-def evaluate(val_loader, model, loss_fn):
+def evaluate(loader, model, loss_fn):
     """
     Computes the loss and accuracy of a model on the validation dataset.
 
     TODO!
     """
-    pass
+    model.eval()
+    total_loss = 0
+    total_correct = 0
+    total_samples = 0
+
+    with torch.no_grad():
+        for batch in loader:
+            inputs, labels = batch
+            outputs = model(inputs)
+            loss = loss_fn(outputs, labels)
+            total_loss += loss.item() * inputs.shape[0]
+            total_correct += compute_accuracy(outputs, labels) * inputs.shape[0]
+            total_samples += inputs.shape[0]
+
+    avg_loss = total_loss / total_samples
+    avg_acc = total_correct / total_samples
+
+    model.train()
+    return avg_loss, avg_acc
