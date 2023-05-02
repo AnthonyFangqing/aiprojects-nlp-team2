@@ -5,6 +5,7 @@ from data.StartingDataset import StartingDataset
 from networks.StartingNetwork import StartingNetwork
 from train_functions.starting_train import starting_train
 from torch.utils.data import random_split
+from load_model_test import *
 
 def main():
     """
@@ -37,6 +38,10 @@ def main():
     train_dataset, val_dataset = random_split(whole_dataset, [train_size, val_size])
     # why do you need two identical Dataset objects?
     # should be changed in some way so that val_dataset only does validation
+
+    #model = load_model()
+    #predict_sentiment(model, whole_dataset, "this is a true statement")
+
 
     model = StartingNetwork(len(whole_dataset.token2idx))
     starting_train(train_dataset=train_dataset, val_dataset=val_dataset, model=model, hyperparameters=hyperparameters, n_eval=constants.N_EVAL,) # call the training function from starting_train.py

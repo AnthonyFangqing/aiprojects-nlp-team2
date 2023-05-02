@@ -45,7 +45,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
             outputs = model(inputs)
             loss = loss_fn(outputs, labels)
 
-            # TODO: Backpropagation and gradient descent
+            # Backpropagation and gradient descent
             loss.backward()
             optimizer.step()
 
@@ -61,17 +61,17 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
                 print(f"Step {step}, Training Loss: {train_loss:.4f}, Training Accuracy: {train_acc:.4f}")
 
                 # Compute validation loss and accuracy
-                with torch.no_grad():
-                    val_loss, val_acc = evaluate(val_loader, model, loss_fn)
+                # with torch.no_grad():
+                    # val_loss, val_acc = evaluate(val_loader, model, loss_fn)
 
                 # Log validation results to console
-                print(f"Step {step}, Validation Loss: {val_loss:.4f}, Validation Accuracy: {val_acc:.4f}")
+                # print(f"Step {step}, Validation Loss: {val_loss:.4f}, Validation Accuracy: {val_acc:.4f}")
 
                 # TODO:
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard. 
                 # Don't forget to turn off gradient calculations!
-                evaluate(val_loader, model, loss_fn)
+                # evaluate(val_loader, model, loss_fn)
 
             step += 1
         epoch_loss = sum(losses) / step
@@ -100,25 +100,25 @@ def compute_accuracy(outputs, labels):
 def evaluate(loader, model, loss_fn):
     """
     Computes the loss and accuracy of a model on the validation dataset.
-
-    TODO!
     """
-    model.eval()
-    total_loss = 0
-    total_correct = 0
-    total_samples = 0
+    model.eval()  # Put the model in evaluation mode
+    total_loss, total_acc = 0, 0
+    n_examples = 0
 
-    with torch.no_grad():
+    with torch.no_grad():  # Turn off gradient calculations
         for batch in loader:
             inputs, labels = batch
             outputs = model(inputs)
             loss = loss_fn(outputs, labels)
-            total_loss += loss.item() * inputs.shape[0]
-            total_correct += compute_accuracy(outputs, labels) * inputs.shape[0]
-            total_samples += inputs.shape[0]
+            acc = compute_accuracy(outputs, labels)
 
-    avg_loss = total_loss / total_samples
-    avg_acc = total_correct / total_samples
+            total_loss += loss.item() * len(inputs)
+            total_acc += acc * len(inputs)
+            n_examples += len(inputs)
 
-    model.train()
-    return avg_loss, avg_acc
+    avg_loss = total_loss / n_examples
+    avg_acc = total_acc / n_examples
+
+    print(f"Validation loss: {avg_loss:.4f}, accuracy: {avg_acc:.4f}")
+
+    model.train()  # Put the model back in training mode
