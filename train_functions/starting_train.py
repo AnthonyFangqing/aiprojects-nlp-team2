@@ -74,7 +74,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
                 # evaluate(val_loader, model, loss_fn)
 
             step += 1
-        epoch_loss = sum(losses) / step
+        epoch_loss = sum(losses) / step # average the losses
         train_losses.append(epoch_loss)
         tqdm.write(f'Epoch #{epoch + 1}\tTrain Loss: {epoch_loss:.3f}')
         print()
