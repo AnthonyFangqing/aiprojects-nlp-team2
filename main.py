@@ -43,8 +43,8 @@ def main():
 
     # will implement train/eval split later, when we actually use the val_dataset
     model = StartingNetwork(len(whole_dataset.token2idx))
-    model.to(device)
-    starting_train(train_dataset=whole_dataset, val_dataset=whole_dataset, model=model, hyperparameters=hyperparameters, n_eval=constants.N_EVAL,) # call the training function from starting_train.py
+    model = model.to(device)
+    starting_train(train_dataset=whole_dataset, val_dataset=whole_dataset, model=model, hyperparameters=hyperparameters, n_eval=constants.N_EVAL, device=device) # call the training function from starting_train.py
     # hyperparameters from constants.py
     # can customize model
     #return whole_dataset

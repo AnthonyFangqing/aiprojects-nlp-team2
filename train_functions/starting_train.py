@@ -4,7 +4,7 @@ import torch.optim as optim
 from tqdm import tqdm
 
 
-def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
+def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, device):
     """
     Trains and evaluates a model.
 
@@ -42,8 +42,8 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
 
             # Forward propagate
             inputs, labels = batch
-            inputs.to(device)
-            labels.to(device)
+            inputs = inputs.to(device)
+            labels = labels.to(device)
             outputs = model(inputs)
             loss = loss_fn(outputs, labels)
 
