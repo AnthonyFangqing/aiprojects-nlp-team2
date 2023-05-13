@@ -42,6 +42,8 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
 
             # Forward propagate
             inputs, labels = batch
+            inputs.to(device)
+            labels.to(device)
             outputs = model(inputs)
             loss = loss_fn(outputs, labels)
 
