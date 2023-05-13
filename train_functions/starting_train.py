@@ -52,6 +52,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
             losses.append(loss.item())
 
             # Periodically evaluate our model + log to Tensorboard
+            # skipped for now
             if step % n_eval == -1:
                 # Compute training loss and accuracy
                 with torch.no_grad():
@@ -79,7 +80,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
         tqdm.write(f'Epoch #{epoch + 1}\tTrain Loss: {epoch_loss:.3f}')
         print()
 
-
+# probably also doesn't work
 def compute_accuracy(outputs, labels):
     """
     Computes the accuracy of a model's predictions.
@@ -96,7 +97,7 @@ def compute_accuracy(outputs, labels):
     n_total = len(outputs)
     return n_correct / n_total
 
-
+# doesn't work
 def evaluate(loader, model, loss_fn):
     """
     Computes the loss and accuracy of a model on the validation dataset.
