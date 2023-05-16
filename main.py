@@ -20,6 +20,7 @@ def main():
     # Initalize dataset and model. Then train the model!
     data_path = "/Users/sava/quora-insincere-questions-classification/train.csv" 
 
+    # right now are the same, need to change
     train_dataset = StartingDataset(data_path)
     val_dataset = StartingDataset(data_path)
     model = StartingNetwork()
@@ -34,3 +35,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # do we need to do anything else?

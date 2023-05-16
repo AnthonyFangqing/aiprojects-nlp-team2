@@ -10,6 +10,7 @@ class StartingNetwork(torch.nn.Module):
     def __init__(self):
         super().__init__()
         self.fc1 = nn.Linear(12122002, 50) # What could that number mean!?!?!? Ask an officer to find out :)
+        #first number should be size of input
         self.fc2 = nn.Linear(50, 10)
         self.sigmoid = nn.Sigmoid()
 
@@ -17,6 +18,8 @@ class StartingNetwork(torch.nn.Module):
         '''
         x (tensor): the input to the model
         '''
+        # added just to look at dimensions
+        print(x.shape)
         x = self.fc1(x)
         x = self.fc2(x)
         x = self.sigmoid(x)

@@ -34,12 +34,24 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
     step = 0
     for epoch in range(epochs):
         print(f"Epoch {epoch + 1} of {epochs}")
-
         # Loop over each batch in the dataset
         for batch in tqdm(train_loader):
-            # TODO: Forward propagate
+            # Forward propagate
 
-            # TODO: Backpropagation and gradient descent
+            # Zero the gradients
+            model.zero_grad()
+
+            # Forward propogate
+            inputs, labels = batch
+            outputs = model(inputs)
+            loss = loss_fn(outputs, labels)
+
+            # Backpropagation and gradient descent
+            loss.backward()
+            optimizer.step()
+
+            losses.append(loss.item)
+
 
             # Periodically evaluate our model + log to Tensorboard
             if step % n_eval == 0:
