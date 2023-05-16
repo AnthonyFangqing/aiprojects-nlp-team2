@@ -44,14 +44,31 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
             inputs, labels = batch
             inputs = inputs.to(device)
             labels = labels.to(device)
+            labels = labels.float()
+
+            #printed = False
+            #if (not printed):
+            #    device_id = torch.cuda.current_device()
+            #    print("GPU Device ID:", device_id)
+            #    print(next(model.parameters()).is_cuda)
+            #    print(inputs.get_device())
+            #    print(labels.get_device())
+            #    printed = True
             outputs = model(inputs)
             loss = loss_fn(outputs, labels)
+
+            #print("Input size:", inputs.size())
 
             # Backpropagation and gradient descent
             loss.backward()
             optimizer.step()
 
             losses.append(loss.item())
+            if step % n_eval == 0:
+                model.eval()
+                with torch.no_grad():
+                    print(f"Step {step}, Training Accuracy: {compute_accuracy(outputs, labels):.4f}")
+                model.train()
 
             # Periodically evaluate our model + log to Tensorboard
             # skipped for now
@@ -94,8 +111,9 @@ def compute_accuracy(outputs, labels):
     Example output:
         0.75
     """
-
-    n_correct = (torch.round(outputs) == labels).sum().item()
+    #print("Output size:", outputs.size())
+    #print("Label size:", labels.size())
+    n_correct = (torch.round(outputs.squeeze()) == labels).sum().item()
     n_total = len(outputs)
     return n_correct / n_total
 
