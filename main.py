@@ -30,12 +30,12 @@ def main():
     whole_dataset = StartingDataset(data_path)
 
     # define the sizes of your training and validation sets
-    # train_size = int(constants.TRAIN_VAL_SPLIT * len(whole_dataset))
-    # val_size = len(whole_dataset) - train_size
+    train_size = int(constants.TRAIN_VAL_SPLIT * len(whole_dataset))
+    val_size = len(whole_dataset) - train_size
 
     # use random_split to split the dataset into non-overlapping
     # training and validation sets
-    # train_dataset, val_dataset = random_split(whole_dataset, [train_size, val_size])
+    train_dataset, val_dataset = random_split(whole_dataset, [train_size, val_size])
     # why do you need two identical Dataset objects?
     # should be changed in some way so that val_dataset only does validation
 
@@ -45,7 +45,7 @@ def main():
     # will implement train/eval split later, when we actually use the val_dataset
     model = StartingNetwork(len(whole_dataset.token2idx))
     model = model.to(device)
-    starting_train(train_dataset=whole_dataset, val_dataset=whole_dataset, model=model, hyperparameters=hyperparameters, n_eval=constants.N_EVAL, device=device) # call the training function from starting_train.py
+    starting_train(train_dataset=train_dataset, val_dataset=val_dataset, model=model, hyperparameters=hyperparameters, n_eval=constants.N_EVAL, device=device) # call the training function from starting_train.py
     # hyperparameters from constants.py
     # can customize model
     #return whole_dataset

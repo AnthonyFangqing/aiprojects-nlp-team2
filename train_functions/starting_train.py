@@ -91,11 +91,12 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard. 
                 # Don't forget to turn off gradient calculations!
-                # evaluate(val_loader, model, loss_fn)
+                # 
                 # 
                 train_loss = loss
                 train_acc = compute_accuracy(outputs, labels)
                 print(f"Step {step}, Training Loss: {train_loss:.4f}, Training Accuracy: {train_acc:.4f}")
+                evaluate(val_loader, model, loss_fn, device)
 
             step += 1
         epoch_loss = sum(losses) / step # average the losses
@@ -125,31 +126,32 @@ def compute_accuracy(outputs, labels):
 def evaluate(loader, model, loss_fn, device):
     """
     Computes the loss and accuracy of a model on the validation dataset.
+    Essentially does 1 epoch of calculations using a batch_size amount of data from the validation data loader
     """
     model.eval()  # Put the model in evaluation mode
-    total_loss, total_acc = 0, 0
-    n_examples = 0
-
+    total_losses, total_accs = [], []
+    total = 0
     with torch.no_grad():  # Turn off gradient calculations
         for batch in loader:
             inputs, labels = batch
             inputs = inputs.to(device)
             labels = labels.to(device)
 
-            #labels = labels.float()
+            labels = labels.float()
 
             outputs = model(inputs)
             loss = loss_fn(outputs, labels)
             acc = compute_accuracy(outputs, labels)
 
-            total_loss += loss.item() * len(inputs)
-            total_acc += acc * len(inputs)
-            n_examples += len(inputs)
+            total_losses.append(loss)
+            total_accs.append(acc)
 
-    avg_loss = total_loss / n_examples
-    avg_acc = total_acc / n_examples
+            total+=1
 
-    #print(f"Validation loss: {avg_loss:.4f}, accuracy: {avg_acc:.4f}")
+    avg_loss = sum(total_losses) / total
+    avg_acc = sum(total_accs) / total
+
+    print(f"Validation loss: {avg_loss:.4f}, accuracy: {avg_acc:.4f}")
 
     model.train()  # Put the model back in training mode
 
