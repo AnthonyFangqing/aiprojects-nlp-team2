@@ -15,7 +15,7 @@ def predict_sentiment(model, question, dataset):
         output = model(test_vector)
         prediction = torch.sigmoid(output).item()
 
-        if prediction > 0.5:
+        if prediction < 0.5:
             print(f'{prediction:0.3}: Sincere sentiment')
         else:
             print(f'{prediction:0.3}: Insincere sentiment')
