@@ -64,34 +64,38 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
             optimizer.step()
 
             losses.append(loss.item())
-            if step % n_eval == 0:
-                model.eval()
-                with torch.no_grad():
-                    print(f"Step {step}, Training Accuracy: {compute_accuracy(outputs, labels):.4f}")
-                model.train()
+            
+            #if step % n_eval == 0:
+            #    model.eval()
+            #    with torch.no_grad():
+            #        print(f"Step {step}, Training Accuracy: {compute_accuracy(outputs, labels):.4f}")
+            #    model.train()
 
             # Periodically evaluate our model + log to Tensorboard
             # skipped for now
-            if step % n_eval == -1:
+            if step % n_eval == 0:
                 # Compute training loss and accuracy
-                with torch.no_grad():
-                    train_loss, train_acc = evaluate(train_loader, model, loss_fn)
+                #with torch.no_grad():
+                    #train_loss, train_acc = evaluate(train_loader, model, loss_fn, device)
 
-                 # Log training results to console
-                print(f"Step {step}, Training Loss: {train_loss:.4f}, Training Accuracy: {train_acc:.4f}")
+                # Log training results to console
 
                 # Compute validation loss and accuracy
-                # with torch.no_grad():
-                    # val_loss, val_acc = evaluate(val_loader, model, loss_fn)
+                #with torch.no_grad():
+                    #val_loss, val_acc = evaluate(val_loader, model, loss_fn, device)
 
                 # Log validation results to console
-                # print(f"Step {step}, Validation Loss: {val_loss:.4f}, Validation Accuracy: {val_acc:.4f}")
+                #print(f"Step {step}, Validation Loss: {val_loss:.4f}, Validation Accuracy: {val_acc:.4f}")
 
                 # TODO:
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard. 
                 # Don't forget to turn off gradient calculations!
                 # evaluate(val_loader, model, loss_fn)
+                # 
+                train_loss = loss
+                train_acc = compute_accuracy(outputs, labels)
+                print(f"Step {step}, Training Loss: {train_loss:.4f}, Training Accuracy: {train_acc:.4f}")
 
             step += 1
         epoch_loss = sum(losses) / step # average the losses
@@ -118,7 +122,7 @@ def compute_accuracy(outputs, labels):
     return n_correct / n_total
 
 # doesn't work
-def evaluate(loader, model, loss_fn):
+def evaluate(loader, model, loss_fn, device):
     """
     Computes the loss and accuracy of a model on the validation dataset.
     """
@@ -129,6 +133,11 @@ def evaluate(loader, model, loss_fn):
     with torch.no_grad():  # Turn off gradient calculations
         for batch in loader:
             inputs, labels = batch
+            inputs = inputs.to(device)
+            labels = labels.to(device)
+
+            #labels = labels.float()
+
             outputs = model(inputs)
             loss = loss_fn(outputs, labels)
             acc = compute_accuracy(outputs, labels)
@@ -140,6 +149,8 @@ def evaluate(loader, model, loss_fn):
     avg_loss = total_loss / n_examples
     avg_acc = total_acc / n_examples
 
-    print(f"Validation loss: {avg_loss:.4f}, accuracy: {avg_acc:.4f}")
+    #print(f"Validation loss: {avg_loss:.4f}, accuracy: {avg_acc:.4f}")
 
     model.train()  # Put the model back in training mode
+
+    return (avg_loss, avg_acc)

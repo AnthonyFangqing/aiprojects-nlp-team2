@@ -17,8 +17,9 @@ class StartingNetwork(torch.nn.Module):
         '''
         x (tensor): the input to the model
         '''
+        
         #print("Shape 0: ", x.shape)
-        x = self.fc1(x.squeeze(1).float())
+        x = self.fc1(x.squeeze().float())
         #print("Shape 1: ", x.shape)
         x = self.fc2(x)
         #print("Shape 2: ", x.shape)
