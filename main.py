@@ -49,6 +49,7 @@ def main():
     # hyperparameters from constants.py
     # can customize model
     #return whole_dataset
+    torch.save(model.state_dict(), 'save/model.pth')
     return model
 
 
