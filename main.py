@@ -6,6 +6,16 @@ from networks.StartingNetwork import StartingNetwork
 from train_functions.starting_train import starting_train
 from torch.utils.data import random_split
 
+def load_starting_dataset():
+    # Initalize dataset and model. Then train the model!
+    data_path = "train.csv" #TODO: make sure you have train.csv downloaded in your project! this assumes it is in the project's root directory (ie the same directory as main) but you can change this as you please
+    # 1306122 rows -- they gave us 12122002 by default
+    # qid, question_text, target
+    # test_csv has no targets
+
+    whole_dataset = StartingDataset(data_path)
+    return whole_dataset
+
 def main():
     """
     Reads in data and 
@@ -21,13 +31,7 @@ def main():
     print("Epochs:", constants.EPOCHS)
     print("Batch size:", constants.BATCH_SIZE)
 
-    # Initalize dataset and model. Then train the model!
-    data_path = "train.csv" #TODO: make sure you have train.csv downloaded in your project! this assumes it is in the project's root directory (ie the same directory as main) but you can change this as you please
-    # 1306122 rows -- they gave us 12122002 by default
-    # qid, question_text, target
-    # test_csv has no targets
-
-    whole_dataset = StartingDataset(data_path)
+    whole_dataset = load_starting_dataset()
 
     # define the sizes of your training and validation sets
     train_size = int(constants.TRAIN_VAL_SPLIT * len(whole_dataset))
@@ -49,9 +53,20 @@ def main():
     # hyperparameters from constants.py
     # can customize model
     #return whole_dataset
-    torch.save(model.state_dict(), 'save/model.pth' )
+    torch.save(model.state_dict(), 'saved_models/model.pth' )
     return model
+
+from extra_functions import predict_sentiment
+
+def predict_sentiment_test():
+    whole_dataset = load_starting_dataset()
+    model = StartingNetwork(len(whole_dataset.token2idx))
+    model.load_state_dict(torch.load('saved_models/model.pth'))
+    question = "How do you find the nth term in a Fibonacci sequence?"
+    predict_sentiment(model, question, whole_dataset)
+
 
 
 if __name__ == "__main__":
-    finished_model = main()
+    #finished_model = main()
+    predict_sentiment_test()
