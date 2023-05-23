@@ -12,13 +12,13 @@ class StartingNetwork2(torch.nn.Module):
         self.fc1 = nn.Linear(vocab_size, hidden1) # What could that number mean!?!?!? Ask an officer to find out :)
         self.fc2 = nn.Linear(hidden1, hidden2)
         self.fc3 = nn.Linear(hidden2, 1)
-        self.relu = nn.functional.relu()
+        self.relu = nn.functional.relu
 
     def forward(self, x):
         '''
         x (tensor): the input to the model
         '''
-        
+        x = x.float()
         #print("Shape 0: ", x.shape)
         x = self.fc1(x.squeeze())
         x = self.relu(x)

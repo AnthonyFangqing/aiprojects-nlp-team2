@@ -3,6 +3,7 @@ import torch
 import constants
 from data.StartingDataset import StartingDataset
 from networks.StartingNetwork import StartingNetwork
+from networks.StartingNetwork2 import StartingNetwork2
 from train_functions.starting_train import starting_train
 from torch.utils.data import random_split
 
@@ -46,13 +47,12 @@ def main():
     #model = load_model()
     #predict_sentiment(model, whole_dataset, "this is a true statement")
 
-    # will implement train/eval split later, when we actually use the val_dataset
-    model = StartingNetwork(len(whole_dataset.token2idx))
+    model = StartingNetwork2(len(whole_dataset.token2idx), 128, 64)
     model = model.to(device)
     starting_train(train_dataset=train_dataset, val_dataset=val_dataset, model=model, hyperparameters=hyperparameters, n_eval=constants.N_EVAL, device=device) # call the training function from starting_train.py
     # hyperparameters from constants.py
     # can customize model
-    #return whole_dataset
+    # return whole_dataset
     file_name = get_timestamp()
     torch.save(model.state_dict(), 'saved_models/' + file_name + '.pth' )
     return model

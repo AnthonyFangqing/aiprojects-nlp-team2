@@ -44,6 +44,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
             inputs, labels = batch
             inputs = inputs.to(device)
             labels = labels.to(device)
+            
 
             #printed = False
             #if (not printed):
