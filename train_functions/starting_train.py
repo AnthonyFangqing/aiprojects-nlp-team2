@@ -44,7 +44,6 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
             inputs, labels = batch
             inputs = inputs.to(device)
             labels = labels.to(device)
-            labels = labels.float()
 
             #printed = False
             #if (not printed):
@@ -137,7 +136,6 @@ def evaluate(loader, model, loss_fn, device):
             inputs = inputs.to(device)
             labels = labels.to(device)
 
-            labels = labels.float()
 
             outputs = model(inputs)
             loss = loss_fn(outputs, labels)

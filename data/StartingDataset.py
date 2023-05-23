@@ -27,7 +27,7 @@ class StartingDataset(torch.utils.data.Dataset):
         i (int): the desired instance of the dataset
         '''
         # return the ith sample's list of word counts and label
-        return self.sequences[i, :].toarray(), self.labels[i]
+        return self.sequences[i, :].toarray(), float(self.labels[i])
 
     # This should work
     def __len__(self):
