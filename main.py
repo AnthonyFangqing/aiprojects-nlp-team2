@@ -53,7 +53,8 @@ def main():
     # hyperparameters from constants.py
     # can customize model
     #return whole_dataset
-    torch.save(model.state_dict(), 'saved_models/model.pth' )
+    file_name = get_timestamp()
+    torch.save(model.state_dict(), 'saved_models/' + file_name + '.pth' )
     return model
 
 from extra_functions import predict_sentiment
@@ -65,8 +66,17 @@ def predict_sentiment_test():
     question = "How do you find the nth term in a Fibonacci sequence?"
     predict_sentiment(model, question, whole_dataset)
 
+from datetime import datetime
+def get_timestamp():
+    # Get current time
+    current_time = datetime.now()
+
+    # Format the time as a sortable string
+    sortable_time = current_time.strftime("%Y-%m-%d_%H-%M-%S")
+
+    return sortable_time
 
 
 if __name__ == "__main__":
-    #finished_model = main()
-    predict_sentiment_test()
+    finished_model = main()
+    #predict_sentiment_test()
