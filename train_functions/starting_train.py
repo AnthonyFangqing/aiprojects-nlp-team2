@@ -29,7 +29,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
 
     # Initalize optimizer (for gradient descent) and loss function
     optimizer = optim.Adam(model.parameters())
-    loss_fn = nn.CrossEntropyLoss()
+    loss_fn = nn.BCEWithLogitsLoss()
     train_losses = []
     step = 0
     for epoch in range(epochs):
