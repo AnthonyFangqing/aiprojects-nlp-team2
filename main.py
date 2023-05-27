@@ -21,6 +21,7 @@ def main():
     """
     Reads in data and 
     """
+    
     # Get command line arguments
     hyperparameters = {"epochs": constants.EPOCHS, "batch_size": constants.BATCH_SIZE, "train_val_split": constants.TRAIN_VAL_SPLIT}
 
