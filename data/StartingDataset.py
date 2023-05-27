@@ -1,7 +1,7 @@
 import torch
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
-
+import numpy as np
 
 class StartingDataset(torch.utils.data.Dataset):
     """

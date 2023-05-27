@@ -29,7 +29,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
 
     # Initalize optimizer (for gradient descent) and loss function
     optimizer = optim.Adam(model.parameters())
-    loss_fn = nn.CrossEntropyLoss()
+    loss_fn = nn.BCEWithLogitsLoss()
     train_losses = []
     step = 0
     for epoch in range(epochs):
@@ -38,12 +38,13 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
         # Loop over each batch in the dataset
         for batch in tqdm(train_loader):
             # Zero the gradients
-            model.zero_grad()
+            model.zero_grad(set_to_none=True)
 
             # Forward propagate
             inputs, labels = batch
             inputs = inputs.to(device)
             labels = labels.to(device)
+            
 
             #printed = False
             #if (not printed):
