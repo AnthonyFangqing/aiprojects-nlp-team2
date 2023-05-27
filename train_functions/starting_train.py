@@ -38,7 +38,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
         # Loop over each batch in the dataset
         for batch in tqdm(train_loader):
             # Zero the gradients
-            model.zero_grad()
+            model.zero_grad(set_to_none=True)
 
             # Forward propagate
             inputs, labels = batch
