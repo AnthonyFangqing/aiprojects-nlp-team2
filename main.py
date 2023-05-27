@@ -7,6 +7,10 @@ from networks.StartingNetwork2 import StartingNetwork2
 from train_functions.starting_train import starting_train
 from torch.utils.data import random_split
 
+from importlib import reload
+
+constants = reload(constants)
+
 def load_starting_dataset():
     # Initalize dataset and model. Then train the model!
     data_path = "train.csv" #TODO: make sure you have train.csv downloaded in your project! this assumes it is in the project's root directory (ie the same directory as main) but you can change this as you please
