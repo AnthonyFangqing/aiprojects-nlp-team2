@@ -58,9 +58,9 @@ def main():
     # hyperparameters from constants.py
     # can customize model
     # return whole_dataset
-    file_name = get_timestamp()
-    torch.save(model.state_dict(), 'saved_models/' + file_name + '.pth' )
-    return model
+    file_path = 'saved_models/' +  get_timestamp() + '.pth'
+    torch.save(model.state_dict(),  file_path)
+    return (model, file_path)
 
 from extra_functions import predict_sentiment
 
