@@ -28,7 +28,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
     )
 
     # Initalize optimizer (for gradient descent) and loss function
-    optimizer = optim.Adam(model.parameters())
+    optimizer = optim.Adam([p for p in model.parameters() if p.requires_grad], lr=0.001)
     loss_fn = nn.BCEWithLogitsLoss()
     train_losses = []
     step = 0
@@ -38,61 +38,25 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
         # Loop over each batch in the dataset
         for batch in tqdm(train_loader):
             # Zero the gradients
-            model.zero_grad(set_to_none=True)
+            model.zero_grad()
 
             # Forward propagate
             inputs, labels = batch
             inputs = inputs.to(device)
             labels = labels.to(device)
-            
 
-            #printed = False
-            #if (not printed):
-            #    device_id = torch.cuda.current_device()
-            #    print("GPU Device ID:", device_id)
-            #    print(next(model.parameters()).is_cuda)
-            #    print(inputs.get_device())
-            #    print(labels.get_device())
-            #    printed = True
             outputs = model(inputs)
             loss = loss_fn(outputs, labels)
-
-            #print("Input size:", inputs.size())
 
             # Backpropagation and gradient descent
             loss.backward()
             optimizer.step()
 
             losses.append(loss.item())
-            
-            #if step % n_eval == 0:
-            #    model.eval()
-            #    with torch.no_grad():
-            #        print(f"Step {step}, Training Accuracy: {compute_accuracy(outputs, labels):.4f}")
-            #    model.train()
 
-            # Periodically evaluate our model + log to Tensorboard
-            # skipped for now
+            # Periodically evaluate our model
+            # TODO: log to Tensorboard
             if step % n_eval == 0:
-                # Compute training loss and accuracy
-                #with torch.no_grad():
-                    #train_loss, train_acc = evaluate(train_loader, model, loss_fn, device)
-
-                # Log training results to console
-
-                # Compute validation loss and accuracy
-                #with torch.no_grad():
-                    #val_loss, val_acc = evaluate(val_loader, model, loss_fn, device)
-
-                # Log validation results to console
-                #print(f"Step {step}, Validation Loss: {val_loss:.4f}, Validation Accuracy: {val_acc:.4f}")
-
-                # TODO:
-                # Compute validation loss and accuracy.
-                # Log the results to Tensorboard. 
-                # Don't forget to turn off gradient calculations!
-                # 
-                # 
                 train_loss = loss
                 train_acc = compute_accuracy(outputs, labels)
                 print(f"Step {step}, Training Loss: {train_loss:.4f}, Training Accuracy: {train_acc:.4f}")
@@ -136,7 +100,6 @@ def evaluate(loader, model, loss_fn, device):
             inputs, labels = batch
             inputs = inputs.to(device)
             labels = labels.to(device)
-
 
             outputs = model(inputs)
             loss = loss_fn(outputs, labels)

@@ -83,5 +83,5 @@ def get_timestamp():
 
 
 if __name__ == "__main__":
-    finished_model = main()
+    finished_model, file_path = main()
     #predict_sentiment_test()

@@ -27,7 +27,6 @@ class StartingNetwork2(torch.nn.Module):
         x = self.relu(x)
         #print("Shape 2: ", x.shape)
         x = self.fc3(x)
-        x = self.relu(x)
         x = x.squeeze()
         #print("Shape 3: ", x.shape)
         return x
